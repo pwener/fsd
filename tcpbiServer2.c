@@ -4,8 +4,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #define QLEN            1  /* tamanho da fila de clientes  */
 #define MAX_SIZE	80	   /* tamanho do buffer */
@@ -22,10 +25,10 @@ int main(int argc, char *argv[]) {
   	if(argc<3)  {
     	   printf("uso correto: %s <ip_do_servidor> <porta_do_servidor>\n", argv[0]);
     	   exit(1);  }
-	
+
 	memset((char *)&endServ,0,sizeof(endServ)); /* limpa endServ */
 	endServ.sin_family = AF_INET;         /* conf. familia internet  */
-	endServ.sin_addr.s_addr = inet_addr (argv[1]); 
+	endServ.sin_addr.s_addr = inet_addr (argv[1]);
 	endServ.sin_port = htons(atoi(argv[2])); /* porta disponivel */
 
 	/* Cria socket */
@@ -69,4 +72,3 @@ int main(int argc, char *argv[]) {
 	close (novo_sd);
 	close (sd);
 } /* fim do programa */
-
