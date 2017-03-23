@@ -8,6 +8,7 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 #define MAX_SIZE	80
@@ -54,7 +55,7 @@ int main(int argc,char * argv[]) {
 		printf("CLIENTE# Digite algo (FIM - para terminar): ");
 		fgets(bufout, MAX_SIZE, stdin);
 		send(sd,&bufout,strlen(bufout),0);
-		if (strncmp(bufout, "FIM",3) == 0) 
+		if (strncmp(bufout, "FIM",3) == 0)
 			break;
 		printf("Cliente# ");
 		n = recv(sd, &bufin, sizeof(bufin), 0);

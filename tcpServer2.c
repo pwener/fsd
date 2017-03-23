@@ -7,17 +7,21 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdlib.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 
 #define QLEN	5 /* tamanho da fila de clientes  */
 #define MAX_SIZE	80 /* tamanho do buffer */
 
+int atende_cliente(int descritor, struct sockaddr_in endCli);
+
 int main(int argc, char *argv[]) {
-	struct sockaddr_in endServ;  /* endereço do servidor   */
-	struct sockaddr_in endCli;   /* endereço do cliente    */
+	struct sockaddr_in endServ;  /* endereï¿½o do servidor   */
+	struct sockaddr_in endCli;   /* endereï¿½o do cliente    */
 	int    sd, novo_sd;          /* socket descriptors */
-	int    pid, alen,n; 
+	int    pid, alen,n;
 
 	if (argc<3) {
 		printf("Digite IP e Porta para este servidor\n");
@@ -28,7 +32,7 @@ int main(int argc, char *argv[]) {
 	bzero((char *) &endServ, sizeof(endServ));
 
 	endServ.sin_family = AF_INET; /* familia TCP/IP */
-	endServ.sin_addr.s_addr = inet_addr(argv[1]); /* endereço IP */
+	endServ.sin_addr.s_addr = inet_addr(argv[1]); /* endereï¿½o IP */
 	endServ.sin_port = htons(atoi(argv[2])); /* PORTA */
 
 	/* Cria socket */
@@ -42,7 +46,7 @@ int main(int argc, char *argv[]) {
 	/* liga socket a porta e ip */
 	if (bind(sd, (struct sockaddr *) &endServ, sizeof(endServ)) < 0) {
 		fprintf(stderr, "Ligacao Falhou!\n");
-		exit(EXIT_FAILURE); 
+		exit(EXIT_FAILURE);
 	}
 
 	/* Ouve porta */
@@ -55,12 +59,12 @@ int main(int argc, char *argv[]) {
 	/* Aceita conexoes */
 	alen = sizeof(endCli);
 	while(1) {
-		/* espera nova conexao de um processo cliente ... */	
+		/* espera nova conexao de um processo cliente ... */
 		if ( (novo_sd=accept(sd, (struct sockaddr *)&endCli, &alen)) < 0) {
 			fprintf(stdout, "Falha na conexao\n");
-			exit(EXIT_FAILURE); 
+			exit(EXIT_FAILURE);
 		}
-		fprintf(stdout, "Cliente %d: %u conectado.\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port)); 
+		fprintf(stdout, "Cliente %s: %u conectado.\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port));
 		atende_cliente(novo_sd, endCli);
 	} /* fim for */
 
@@ -79,12 +83,10 @@ int atende_cliente(int descritor, struct sockaddr_in endCli) {
 			break;
 		}
 
-		fprintf(stdout, "[%d:%u] => %s\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port), bufin);
+		fprintf(stdout, "[%s:%u] => %s\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port), bufin);
    } /* fim while */
 
-	fprintf(stdout, "Encerrando conexao com %d:%u ...\n\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port));
+	fprintf(stdout, "Encerrando conexao com %s:%u ...\n\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port));
 	close (descritor);
 
 } /* fim atende_cliente */
-
-
