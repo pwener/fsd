@@ -6,9 +6,11 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #define QLEN            1  /* tamanho da fila de clientes  */
 #define MAX_SIZE	80	   /* tamanho do buffer */
+
 int main(int argc, char *argv[]) {
 
 	struct  sockaddr_in endServ; /* estrutura do servidor   */
@@ -50,7 +52,7 @@ int main(int argc, char *argv[]) {
 	if ( (novo_sd=accept(sd, (struct sockaddr *)&endCli, &alen)) < 0) {
 		fprintf(stderr, "Falha na conexao\n");
 		exit(1); }
-	printf("Cliente %s conectado.\n",inet_ntoa(endCli.sin_addr));
+	printf("Cliente %d conectado.\n",inet_ntoa(endCli.sin_addr));
 	while (1) {
 		memset(&bufin, 0x0, sizeof(bufin));
 		memset(&bufout, 0x0, sizeof(bufout));
