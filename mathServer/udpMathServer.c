@@ -1,6 +1,3 @@
-/********************************/
-/* Lab.Redes 2 - udpServer.c    */
-/********************************/ 
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
