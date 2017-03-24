@@ -60,8 +60,8 @@ double calc(char * argv[]) {
 int main(int argc, char *argv[]) {
 	int sd, rc, n, tam_Cli;
 	int counter = 0;
-	struct sockaddr_in endCli;   /* Vai conter identificacao do cliente */
-	struct sockaddr_in endServ;  /* Vai conter identificacao do servidor local */
+	struct sockaddr_in client;   /* Vai conter identificacao do cliente */
+	struct sockaddr_in server;  /* Vai conter identificacao do servidor local */
 	char   msg[MAX_MSG];/* Buffer que armazena os dados que chegaram via rede */
 	double result = -1;
 	char * form[3];
@@ -83,15 +83,15 @@ int main(int argc, char *argv[]) {
 		exit(1);  
 	}
 
-	bzero((char *) &endServ, sizeof(endServ));
+	bzero((char *) &server, sizeof(server));
 
 	/* Preenchendo informacoes sobre o servidor */
-	endServ.sin_family 	  = AF_INET;
-	endServ.sin_addr.s_addr = inet_addr(argv[1]);
-	endServ.sin_port 	  = htons(atoi(argv[2]));
+	server.sin_family 	  = AF_INET;
+	server.sin_addr.s_addr = inet_addr(argv[1]);
+	server.sin_port 	  = htons(atoi(argv[2]));
 
 	/* Fazendo um bind na porta local do servidor */
-	rc = bind (sd, (struct sockaddr *) &endServ, sizeof(endServ));
+	rc = bind (sd, (struct sockaddr *) &server, sizeof(server));
 	
 	if(rc < 0) {
 		printf("%s: nao pode fazer bind na porta %s \n", argv[0], argv[2]);
@@ -104,14 +104,14 @@ int main(int argc, char *argv[]) {
 	while(1) {
 		/* inicia o buffer */
 		memset(msg,0x0,MAX_MSG);
-		tam_Cli = sizeof(endCli);
+		tam_Cli = sizeof(client);
 
 		/* Recebe uma msg(equacao)  */
-		n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &endCli, &tam_Cli);
+		n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &client, &tam_Cli);
 
 		/* Imprime a formula recebida e os dados do cliente */
-		char * client_addr = inet_ntoa(endCli.sin_addr);
-		int client_port = ntohs(endCli.sin_port);
+		char * client_addr = inet_ntoa(client.sin_addr);
+		int client_port = ntohs(client.sin_port);
 
 		printf("{IP_R: %s, Porta_R: %u} => %s\n", client_addr, client_port, msg);
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 				double * result_pointer = &result;
 
-				sendto(sd, result_pointer, sizeof(double), 0, (struct sockaddr *) &endCli, sizeof(endCli));
+				sendto(sd, result_pointer, sizeof(double), 0, (struct sockaddr *) &client, sizeof(client));
 				break;
 			}
 		}
