@@ -6,10 +6,11 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#define QLEN            5               /* tamanho da fila de clientes  */
-#define MAX_SIZE	80		/* tamanho do buffer */
 
+#define QLEN	5		/* tamanho da fila de clientes  */
+#define MAX_SIZE	80		/* tamanho do buffer */
 
 int main(int argc, char *argv[]) {
    struct sockaddr_in endServ;  /* endereço do servidor   */
