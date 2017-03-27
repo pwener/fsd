@@ -4,8 +4,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 #define QLEN		5		/* tamanho da fila de clientes  */
@@ -13,19 +13,19 @@
 
 #define MIN_ARGUMENTS_SIZE 3
 
+void allocate_opf(char * op) {
+	op = malloc(sizeof(char) * sizeof(double));
+}
+
 void reply(int descritor, struct sockaddr_in client)  {
 	char bufin[MAX_SIZE];
 	char op;
-	int a, b, n; // a and b operands, n recv
+	int a, b;
 	double result;
 
 	while (1) {
 		memset(&bufin, 0x0, sizeof(bufin));
-		n = recv(descritor, &bufin, sizeof(bufin), 0);
-
-		if(n < 0) {
-			printf("Algum erro ocorreu ao receber mensagem\n");
-		}
+		recv(descritor, &bufin, sizeof(bufin), 0);
 
 		if (strncmp(bufin, "FIM", 3) == 0) {
 			break;
@@ -59,7 +59,6 @@ void reply(int descritor, struct sockaddr_in client)  {
 
 	close (descritor);
 } /* fim atende_cliente */
-
 
 int main(int argc, char *argv[]) {
 	struct sockaddr_in server;		/* endereço do servidor   */
@@ -103,7 +102,7 @@ int main(int argc, char *argv[]) {
 
 	while(1) {
 		/* espera nova conexao de um processo cliente ... */	
-		if ( (novo_sd=accept(sd, (struct sockaddr *)&client, (socklen_t *) &(alen))) < 0) {
+		if ((novo_sd=accept(sd, (struct sockaddr *) &client, (socklen_t *) &(alen)) < 0)) {
 			printf("Falha na conexao\n");
 			exit(EXIT_FAILURE);
 		}
@@ -124,6 +123,3 @@ int main(int argc, char *argv[]) {
 	} /* fim for */
 } /* fim do programa */
 
-void allocate_opf(char * op) {
-	op = malloc(sizeof(char) * sizeof(double));
-}

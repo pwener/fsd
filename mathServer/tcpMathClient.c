@@ -5,6 +5,7 @@
 #include <netdb.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 
 #define MAX_SIZE	80
@@ -13,7 +14,6 @@
 int main(int argc, char * argv[]) {
 	struct  sockaddr_in server; /* contem dados do servidor 	*/
 	int     sd;					/* socket descriptor              */
-	int     n,k;				/* num caracteres lidos do servidor */
 	char    bufout[MAX_SIZE];	/* buffer de dados enviados  */
 	double * result = malloc(sizeof(double));
 
@@ -23,7 +23,7 @@ int main(int argc, char * argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	memset((char *)&server, 0, sizeof(server)); /* limpa estrutura */
+	memset((char *)&server, 0, sizeof(server)); /* limpa buffer */
 	memset((char *)&bufout, 0, sizeof(bufout)); /* limpa buffer */
 
 	bzero((char *) &server, sizeof(server)); /* write 0 value bytes */
@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
 			break;
 		}
 
-		n = recv(sd, result, 80, 0);
+		recv(sd, result, 80, 0);
 
 		printf("Result is %lf\n", *result);
 
