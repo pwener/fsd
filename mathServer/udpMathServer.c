@@ -5,8 +5,8 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> /* close() */
-#include <string.h> /* memset() */
+#include <unistd.h>
+#include <string.h>
 
 #define MAX_MSG 100
 #define A_INDEX 0
@@ -55,13 +55,15 @@ double calc(char * argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-	int sd, rc, n, tam_Cli;
+	int sd, rc, n;
 	int counter = 0;
 	struct sockaddr_in client;   /* Vai conter identificacao do cliente */
 	struct sockaddr_in server;  /* Vai conter identificacao do servidor local */
-	char   msg[MAX_MSG];/* Buffer que armazena os dados que chegaram via rede */
+	char   msg[MAX_MSG]; /* Buffer que armazena os dados que chegaram via rede */
 	double result = -1;
 	char * form[3];
+
+	unsigned int client_len = sizeof(client);
 
 	form[0] = malloc(sizeof(char*) * 3);
 	form[1] = malloc(sizeof(char*) * 3);
@@ -95,21 +97,21 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	printf("%s: esperando por dados no IP: %s, porta UDP numero: %s\n", argv[0], argv[1], argv[2]);
+	printf("%s: esperando por dados no IP: %s, porta UDP numero: %s\n", 
+			argv[0], argv[1], argv[2]);
 
 	/* Este servidor entra num loop infinito esperando dados de clientes */
 	while(1) {
 		/* inicia o buffer */
 		memset(msg,0x0,MAX_MSG);
-		tam_Cli = sizeof(client);
 
 		/* Recebe uma msg(equacao)  */
-		n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &client, &tam_Cli);
+		n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &client, (socklen_t *) &(client_len));
 
-		/* Imprime a formula recebida e os dados do cliente */
 		char * client_addr = inet_ntoa(client.sin_addr);
 		int client_port = ntohs(client.sin_port);
 
+		/* Imprime a formula recebida e os dados do cliente */
 		printf("{IP_R: %s, Porta_R: %u} => %s\n", client_addr, client_port, msg);
 
 		/* Se conseguiu obter mensagem deve calcular a formula */
@@ -127,7 +129,7 @@ int main(int argc, char *argv[]) {
 				double * result_pointer = &result;
 
 				sendto(sd, result_pointer, sizeof(double), 0, (struct sockaddr *) &client, sizeof(client));
-				break;
+				counter = 0;
 			}
 		}
 	} /* fim do while */

@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h> /* memset() */
-#include <sys/time.h> /* select() */
+#include <string.h>
+#include <sys/time.h>
 
 #define MAX_MSG 100
 #define OPERATION_CHARS 3
@@ -70,12 +70,17 @@ int main(int argc, char *argv[]) {
 
 	/* Espera a resposta do servidor */
 	double * result = malloc(sizeof(double));
-	int client_sock_len = sizeof(server);
+
+	unsigned int server_len = sizeof(server);
 
 	int responsed = recvfrom(sd, result, sizeof(double), 0,
-			(struct sockaddr *) &server, &client_sock_len);
+			(struct sockaddr *) &server, (socklen_t *) &(server_len));
 
-	printf("Result is %lf\n", *result);
+	if(responsed) {
+		printf("Result is %lf\n", *result);
+	} else {
+		printf("Some error occurs!\n");
+	}
 
-	return 1;
+	return 0;
 } /* fim do programa */
