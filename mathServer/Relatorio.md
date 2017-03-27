@@ -1,9 +1,3 @@
-<center> <h1>Relatório da disciplina de Sistemas distribuídos</h1></center>
-<center>
-Fundamentos de Sistemas Distribuídos </br>
-Aluno: Phelipe Wener </br>
-Matrícula: 12/0132893 </br>
-
 ## 1. Objetivo
   O objetivo desse experimento é que o aluno compreenda as características
 inerentes à construção de aplicações distribuídas, incluindo passagem de parâmetros,
