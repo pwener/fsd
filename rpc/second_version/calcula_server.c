@@ -7,7 +7,7 @@
 #include "calcula.h"
 
 int *
-add_1_svc(operandos *argp, struct svc_req *rqstp)
+add_110_svc(operandos *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
@@ -17,7 +17,7 @@ add_1_svc(operandos *argp, struct svc_req *rqstp)
 }
 
 int *
-sub_1_svc(operandos *argp, struct svc_req *rqstp)
+sub_110_svc(operandos *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
@@ -27,7 +27,7 @@ sub_1_svc(operandos *argp, struct svc_req *rqstp)
 }
 
 int *
-mul_1_svc(operandos *argp, struct svc_req *rqstp)
+mul_110_svc(operandos *argp, struct svc_req *rqstp)
 {
 	static int  result;
 
@@ -37,7 +37,7 @@ mul_1_svc(operandos *argp, struct svc_req *rqstp)
 }
 
 int *
-div_1_svc(operandos *argp, struct svc_req *rqstp)
+div_110_svc(operandos *argp, struct svc_req *rqstp)
 {
 	static int  result;
 

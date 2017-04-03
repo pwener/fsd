@@ -10,7 +10,7 @@
 static struct timeval TIMEOUT = { 25, 0 };
 
 int *
-add_1(operandos *argp, CLIENT *clnt)
+add_110(operandos *argp, CLIENT *clnt)
 {
 	static int clnt_res;
 
@@ -25,7 +25,7 @@ add_1(operandos *argp, CLIENT *clnt)
 }
 
 int *
-sub_1(operandos *argp, CLIENT *clnt)
+sub_110(operandos *argp, CLIENT *clnt)
 {
 	static int clnt_res;
 
@@ -40,7 +40,7 @@ sub_1(operandos *argp, CLIENT *clnt)
 }
 
 int *
-mul_1(operandos *argp, CLIENT *clnt)
+mul_110(operandos *argp, CLIENT *clnt)
 {
 	static int clnt_res;
 
@@ -55,7 +55,7 @@ mul_1(operandos *argp, CLIENT *clnt)
 }
 
 int *
-div_1(operandos *argp, CLIENT *clnt)
+div_110(operandos *argp, CLIENT *clnt)
 {
 	static int clnt_res;
 

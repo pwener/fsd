@@ -17,13 +17,13 @@
 #endif
 
 static void
-prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
+prog_110(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		operandos add_1_arg;
-		operandos sub_1_arg;
-		operandos mul_1_arg;
-		operandos div_1_arg;
+		operandos add_110_arg;
+		operandos sub_110_arg;
+		operandos mul_110_arg;
+		operandos div_110_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -37,25 +37,25 @@ prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 	case add:
 		_xdr_argument = (xdrproc_t) xdr_operandos;
 		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) add_1_svc;
+		local = (char *(*)(char *, struct svc_req *)) add_110_svc;
 		break;
 
 	case sub:
 		_xdr_argument = (xdrproc_t) xdr_operandos;
 		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) sub_1_svc;
+		local = (char *(*)(char *, struct svc_req *)) sub_110_svc;
 		break;
 
 	case mul:
 		_xdr_argument = (xdrproc_t) xdr_operandos;
 		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) mul_1_svc;
+		local = (char *(*)(char *, struct svc_req *)) mul_110_svc;
 		break;
 
 	case div:
 		_xdr_argument = (xdrproc_t) xdr_operandos;
 		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) div_1_svc;
+		local = (char *(*)(char *, struct svc_req *)) div_110_svc;
 		break;
 
 	default:
@@ -90,7 +90,7 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create udp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, PROG, VERSAO, prog_1, IPPROTO_UDP)) {
+	if (!svc_register(transp, PROG, VERSAO, prog_110, IPPROTO_UDP)) {
 		fprintf (stderr, "%s", "unable to register (PROG, VERSAO, udp).");
 		exit(1);
 	}
@@ -100,7 +100,7 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create tcp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, PROG, VERSAO, prog_1, IPPROTO_TCP)) {
+	if (!svc_register(transp, PROG, VERSAO, prog_110, IPPROTO_TCP)) {
 		fprintf (stderr, "%s", "unable to register (PROG, VERSAO, tcp).");
 		exit(1);
 	}

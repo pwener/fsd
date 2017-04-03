@@ -9,5 +9,5 @@ program PROG {
 		int sub(operandos) = 2;
 		int mul(operandos) = 3;
 		int div(operandos) = 4;
-	} = 1;
-} = 10;
+	} = 110;
+} = 22222;

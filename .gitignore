@@ -1,4 +1,6 @@
 # vim files
 *.swp
 
+*.o
+
 /executables/
