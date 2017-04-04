@@ -78,7 +78,7 @@ Falha de segmentação (imagem do núcleo gravada)
 
 - O último comando mostra o limite da aplicação para a arquitetura auto gerada a partir do arquivo calcula.x, que só suporta soma e subtração. É possivel alterar manualmente o código para suportar mais operadores, porém seria algo custoso em vista da quantidade de código gerada. Ao invés disso basta criar um novo arquivo IDF (localizada no second_version):
 
-```
+``` C
 struct operandos {
 	int x;
 	int y;
