@@ -1,12 +1,17 @@
-## 1. Objetivo
-O objetivo desse experimento é entender RPC(Remote Procedure Call's), considerado como um dos pilares para implementação de sistemas distribuidos.
+## 1. Introdução
+Dentro de computação distribuída, comunicação cliente-servidor é fundamental, tal que um problema recorrente com o desenvolvimento desses sistemas é a compatibilidade de servidores com diferentes clientes. Dessa demanda nasce o RPC, que através de uma mesma ferramenta: rpcgen, padroniza a implementação resolvendo muitos dos problemas da comunicação interprocessos.
 
-## 2. Ambiente e configuração
+## 2. Objetivo
+O objetivo desse experimento é entender a arquitetura RPC(Remote Procedure Call's), considerado como um dos pilares para implementação de sistemas distribuidos.
+
+## 3. Ambiente e configuração
 Todos os experimentos abaixo foram executados numa distribuição linux chamada kubuntu, que difere fundamentalmente em termos de interface com o ubuntu. Portanto, deve ser possivel executar os mesmos passos em qualquer versão do Ubuntu 14.04, bem como em um Debian 7.
 
-Já na compilação do código, foi utilizado o rpcgen, usando a tag `-a` para geração de todos arquivos. Para mais informações sobre o rpcgen basta usar `man rpcgen`
+Já na geração automática do código, foi utilizado o rpcgen, usando a tag `-a` para geração de todos arquivos. Para mais informações sobre o rpcgen basta usar `man rpcgen`.
 
-## 3. Desenvolvimento
+Para a compilação foi utilizado o Makefile também gerado pelo rpcgen.
+
+## 4. Desenvolvimento
 
 - Inicialmente foi criado um arquivo IDF(Interface Definition File) calcula.x com o seguinte conteúdo:
 
@@ -122,10 +127,10 @@ $ ./calcula_client 192.168.0.25 4 / 2
 Result is 2
 ```
 
-### 3.1 Problemas encontrados
+### 4.1 Problemas encontrados
 
 O uso do RPC não apresentou nenhum problema.
 
-### 3.2 Limitações de código
+### 4.2 Limitações de código
 
 O segundo programa, presente na pasta <i>second_version</i> só aceita números maiores que 0 e realiza operações de soma, subtração, divisão e multiplicação, apesar de multiplicação ter de ser passado entre aspas, pois o terminal interpreta "*" como regex para tudo.
