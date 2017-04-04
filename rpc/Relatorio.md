@@ -2,7 +2,7 @@
 Dentro de computação distribuída, comunicação cliente-servidor é fundamental, tal que um problema recorrente com o desenvolvimento desses sistemas é a compatibilidade de servidores com diferentes clientes. Dessa demanda nasce o RPC, que através de uma mesma ferramenta: rpcgen, padroniza a implementação resolvendo muitos dos problemas da comunicação interprocessos.
 
 ## 2. Objetivo
-O objetivo desse experimento é entender a arquitetura RPC(Remote Procedure Call's), considerado como um dos pilares para implementação de sistemas distribuidos.
+O objetivo desse experimento é entender a arquitetura RPC(Remote Procedure Call's), considerado como um dos pilares para implementação de sistemas distribuídos.
 
 ## 3. Ambiente e configuração
 Todos os experimentos abaixo foram executados numa distribuição linux chamada kubuntu, que difere fundamentalmente em termos de interface com o ubuntu. Portanto, deve ser possivel executar os mesmos passos em qualquer versão do Ubuntu 14.04, bem como em um Debian 7.
@@ -65,13 +65,13 @@ $ rpcinfo -p
 - Ainda com o servidor em execução, foi executado e recebido as seguintes linhas:
 
 ```
-./calcula_client 192.168.0.25 10 + 20
+$ ./calcula_client 192.168.0.25 10 + 20
 Result is 30
 ...
-./calcula_client 192.168.0.25 50 - 25
+$ ./calcula_client 192.168.0.25 50 - 25
 Result is 25
 ...
-./calcula_client 192.168.0.25 10 / 2
+$ ./calcula_client 192.168.0.25 10 / 2
 Operador inválido
 Falha de segmentação (imagem do núcleo gravada)
 ```
@@ -97,7 +97,7 @@ program PROG {
 
 - Seguindo o formato da implementação do primeiro programa, foi adicionado novas condições ao switch case de cliente:
 
-```
+``` C
 // função prog_110 de calcula_client
 case '*':
 	result = mul_110(&operandos_arg, clnt);
@@ -109,13 +109,10 @@ case '/':
 
 - No server apenas duas novas funções:
 
-```
-int *
-div_110_svc(operandos *argp, struct svc_req *rqstp)
+``` java
+int * div_110_svc(operandos * argp, struct svc_req * rqstp)
 ...
-
-int *
-mul_110_svc(operandos *argp, struct svc_req *rqstp)
+int * mul_110_svc(operandos * argp, struct svc_req * rqstp)
 ...
 ```
 
