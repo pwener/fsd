@@ -15,6 +15,10 @@ sudo stop network-manager
 
 $ sudo ifconfig eth0 192.168.1.7 netmask 255.255.0.0 up
 
+sudo dhclient -r
+
+sudo dhclient
+
 https://wiki.debian.org/DHCP_Server
 
 https://wiki.debian.org/DHCP_Client

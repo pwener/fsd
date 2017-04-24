@@ -1,0 +1,1 @@
+dhcpd     4866  0.0  0.2  19872  8580 ?        Ss   15:51   0:00 dhcpd -user dhcpd -group dhcpd -f -q -4 -pf /run/dhcp-server/dhcpd.pid -cf /etc/dhcp/dhcpd.conf eth0
