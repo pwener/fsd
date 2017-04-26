@@ -1,7 +1,11 @@
 ## 1. Introdução
+O algoritmo de GIMPS(Great Internet Mersenne Search), é um teste de primalidade lançado no início de 1996 como um buscador de grandes números primos; usa computação distribuída em rede pela Internet, comandada por um computador central [2]. Bem como na matemática, são muitas as aplicações que demandam processamento elevado, cujo um único equipamento teria dificuldade em processar. Dessa demanda nasce o Message Passing Interface (MPI), que surge como uma ferramenta de paralelismo, para resolução de problemas recorrentes, como o algoritmo acima citado.
 
+Antes da década de 1990, os programadores não tinham tanta sorte quanto nós. Escrever aplicações paralelas para diferentes arquiteturas de computação era uma tarefa difícil e tediosa. Naquela época, muitas bibliotecas poderiam facilitar a criação de aplicativos paralelos, mas não havia uma maneira padrão aceita de fazê-lo [3]. Basicamente, o MPI é um padrão/interface definido para lidar com problemas comuns enfrentados por pessoas que lidam com paralelismo. Dentro do presente relatório, será explorado um problema cuja programação convencional tem gargalos, ou mesmo limitações.
 
 ## 2. Objetivo
+
+O objetivo desse experimento é que o aluno compreenda as características inerentes à construção de aplicações paralelas, envolvendo comunicação por passagem de mensagens, via padrão MPI.
 
 ## 3. Ambiente e configuração
 Todos os experimentos abaixo foram executados numa distribuição linux chamada kubuntu, que difere fundamentalmente em termos de interface com o ubuntu. Portanto, deve ser possivel executar os mesmos passos em qualquer versão do Ubuntu 14.04, bem como em um Debian 7.
@@ -119,7 +123,19 @@ int main(int argc, char** argv) {
 }
 ```
 
-- 
+- Compilado utilizando o comando: `$ mpicc -o mpie mpi_exp.c -lm`
+
+- O programa foi executando sem erros:
+
+```
+$ mpirun ./mpie
+```
+
+- Tal como explica [1], o MPI utiliza de memória sem restrições, apesar de ser possivel criar essas restrições, a API provê um mecanismo de alocação especial de memória, por esse motivo a alocação do vetor não foi um problema. Porém o código implementado não executa a segunda parte exigida no roteiro, para isso demoraria um tempo considerável da forma como está sendo feito.
+
+- Portanto, foi desenvolvido um programa utilizando MPI que lidasse com múltiplos processos (paralelismo), tal como sugere o roteiro. Segue abaixo o código:
+
+
 
 ## 5. Dificuldades
 
@@ -128,3 +144,9 @@ int main(int argc, char** argv) {
 ### 5.2 Limitações de código
 
 ## 6. Referências
+
+[1] http://www.mcs.anl.gov/research/projects/mpi/mpi-standard/mpi-report-2.0/node54.htm
+
+[2] https://www.ucb.br/sites/100/103/TCC/12008/JoseAluizioFerreiraLima.pdf
+
+[3] http://mpitutorial.com/tutorials/mpi-introduction/
