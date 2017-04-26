@@ -4,33 +4,141 @@
 
 #define VECTOR_LEN 1000000000
 
-int main(int argc, char** argv) {
-  // Initialize the MPI environment. The two arguments to MPI Init are not
-  // currently used by MPI implementations, but are there in case future
-  // implementations might need the arguments.
-  MPI_Init(NULL, NULL);
+#define MAIN_TASK_ID 0
+#define FIRST_NOMAIN_TASK_ID 1
 
-  // Get the number of processes
-  int world_size = 1;
-  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+#define TAG1 7
+#define TAG2 14
 
-  // Get the rank of the process
-  int world_rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+/**
+ * Alocate vector space, at this point the MPI manages
+ * that area with especial spaces.
+ */
+int fill_vector(float v[VECTOR_LEN]) {
+	int index;
+	for(index = 1; index < VECTOR_LEN; index++) {
+		v[index] = pow((index - (VECTOR_LEN/2)), 2);
+	}
+}
 
-  // Get the name of the processor
-  char processor_name[MPI_MAX_PROCESSOR_NAME];
-  int name_len;
-  MPI_Get_processor_name(processor_name, &name_len);
+void assign_chunks(float v[], int chunk_size, int task_numbers) {
+	// Attribute chunks of work to each tasks
+	int offset = chunk_size;
 
-  float v[VECTOR_LEN];
+	int assigned_task_id;
+	for(assigned_task_id = FIRST_NOMAIN_TASK_ID; assigned_task_id < task_numbers; assigned_task_id++) {
+		if(offset < VECTOR_LEN) {
+			MPI_Send(&v[offset], chunk_size, MPI_FLOAT, assigned_task_id, TAG1, MPI_COMM_WORLD);
+			offset = offset + chunk_size;
+		} else {
+			printf("Invalid offset, bigger than array size");
+		}
+	}
+}
 
-  int x;
+void block_and_receive(float v[], int chunk_size, int task_numbers) {
+	// Needed for MPI_Recv bellow
+	MPI_Status status;
 
-  for(x = 0; x < VECTOR_LEN; x++) {
-    v[x] = pow((x - (VECTOR_LEN/2)), 2);
-  }
+	int offset;
 
-  // Finalize the MPI environment. No more MPI calls can be made after this
-  MPI_Finalize();
+	// Waits each task to receive result
+	int source_task_id;
+	for(source_task_id = FIRST_NOMAIN_TASK_ID; source_task_id < task_numbers; source_task_id++) {
+		offset = source_task_id * chunk_size;
+		MPI_Recv(&v[offset], chunk_size, MPI_FLOAT, source_task_id, TAG1, MPI_COMM_WORLD, &status);
+	}
+}
+
+float get_bigger(float v[], int offset, int chunk_size) {
+		float bigger = 0;
+
+		int index;
+		for(index = offset; index < offset+chunk_size; index++) {
+			v[index] = sqrt(v[index]);
+			if(v[index] > bigger) {
+				bigger = v[index];
+			} else {
+				// do nothing...
+			}
+		}
+
+		return bigger;
+}
+
+float get_smaller(float *v, int offset, int chunk_size) {
+	float smaller = 0;
+
+	int index;
+	for(index = offset; index < offset+chunk_size; index++) {
+		v[index] = sqrt(v[index]);
+		if(v[index] < smaller) {
+			smaller = v[index];
+		} else {
+			// do nothing...
+		}
+	}
+
+	return smaller;
+}
+
+
+int main(int argc, char* argv[]) {
+	// declare vector
+	float v[VECTOR_LEN];
+
+	MPI_Init(&argc, &argv);
+
+	// Get the number of processes
+	int task_numbers;
+	MPI_Comm_size(MPI_COMM_WORLD, &task_numbers);
+
+	/** Commom variables **/
+	float task_bigger_value, real_bigger_value;
+	float task_smaller_value, real_smaller_value;
+	int task_id;
+	// Lenght of chunk of work
+	int chunk_size = VECTOR_LEN / task_numbers;
+
+	// Working with paralel programming, each task would filled into task_id
+	MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
+
+	printf("Runs task %d\n", task_id);
+
+	// Main task
+	if (task_id == MAIN_TASK_ID) {
+
+		fill_vector(v);
+
+		assign_chunks(v, chunk_size, task_numbers);
+
+		block_and_receive(v, chunk_size, task_numbers);
+	} else if (task_id > MAIN_TASK_ID) {
+		MPI_Status status;
+
+		// offset of task
+		int offset = task_id * chunk_size;
+
+		// Non main tasks
+		MPI_Recv(&v[offset], chunk_size, MPI_FLOAT, MAIN_TASK_ID, TAG2, MPI_COMM_WORLD, &status);
+
+		task_bigger_value = get_bigger(v, offset, chunk_size);
+		task_smaller_value = get_smaller(v, offset, chunk_size);
+
+		printf("Bigger found in %d is %e\n", task_id, task_bigger_value);
+		printf("Smaller found in %d is %e\n", task_id, task_smaller_value);
+
+		MPI_Send(&v[offset], chunk_size, MPI_FLOAT, MAIN_TASK_ID, TAG2, MPI_COMM_WORLD);
+
+		MPI_Reduce(&task_bigger_value, &real_bigger_value, 1, MPI_INT, MPI_MAX, MAIN_TASK_ID, MPI_COMM_WORLD);
+		MPI_Reduce(&task_smaller_value, &real_smaller_value, 1, MPI_INT, MPI_MIN, MAIN_TASK_ID, MPI_COMM_WORLD);
+	} else {
+		// invalid condition, finish program
+		printf("Error when run tasks\n");
+		MPI_Finalize();
+		return;
+	}
+
+	// Finalize the MPI environment. No more MPI calls can be made after this
+	MPI_Finalize();
 }
