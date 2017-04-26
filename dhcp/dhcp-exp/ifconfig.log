@@ -1,0 +1,9 @@
+lo        Link encap:Loopback Local  
+          inet end.: 127.0.0.1  Masc:255.0.0.0
+          endereço inet6: ::1/128 Escopo:Máquina
+          UP LOOPBACK RUNNING  MTU:65536  Métrica:1
+          pacotes RX:227 erros:0 descartados:0 excesso:0 quadro:0
+          Pacotes TX:227 erros:0 descartados:0 excesso:0 portadora:0
+          colisões:0 txqueuelen:0 
+          RX bytes:20308 (20.3 KB) TX bytes:20308 (20.3 KB)
+

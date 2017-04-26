@@ -1,0 +1,18 @@
+eth0      Link encap:Ethernet  Endereço de HW 00:23:54:9f:89:b8  
+          inet end.: 192.168.1.10  Bcast:192.168.133.1  Masc:255.255.255.0
+          endereço inet6: fe80::223:54ff:fe9f:89b8/64 Escopo:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Métrica:1
+          pacotes RX:485 erros:0 descartados:0 excesso:0 quadro:0
+          Pacotes TX:561 erros:0 descartados:0 excesso:0 portadora:0
+          colisões:0 txqueuelen:1000 
+          RX bytes:348683 (348.6 KB) TX bytes:70458 (70.4 KB)
+
+lo        Link encap:Loopback Local  
+          inet end.: 127.0.0.1  Masc:255.0.0.0
+          endereço inet6: ::1/128 Escopo:Máquina
+          UP LOOPBACK RUNNING  MTU:65536  Métrica:1
+          pacotes RX:421 erros:0 descartados:0 excesso:0 quadro:0
+          Pacotes TX:421 erros:0 descartados:0 excesso:0 portadora:0
+          colisões:0 txqueuelen:0 
+          RX bytes:36017 (36.0 KB) TX bytes:36017 (36.0 KB)
+
